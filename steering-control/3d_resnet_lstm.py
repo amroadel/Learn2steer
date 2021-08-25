@@ -1,3 +1,4 @@
+  
 # Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Loads a sample video and classifies using a trained Kinetics checkpoint.0"""
+"""Loads a sample video and classifies using a trained Kinetics checkpoint."""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -567,41 +568,41 @@ with graph.as_default():
             saver.restore(session, args.path_trained)
 
         for epoch in range(NUM_EPOCHS):
-            print("Starting epoch %d" % epoch)
-            mae_error = 0.0
-            rmse_error = 0.0
-            test_predictions = []
-            num_test = 0
+	    print("Starting epoch %d" % epoch)
+	    mae_error = 0.0
+	    rmse_error = 0.0
+	    test_predictions = []
+	    num_test = 0
             start = time.time()
 	    _, test_predictions = do_epoch(session=session, sequences=test_seq, mode="test")
             end = time.time()
             print("Total testing time :" + str(end - start))
             
-	        for img, pred in test_predictions.items():
-                img = img.replace("center/", "")
-                mae_error = mae_error + abs(pred - test_label[img])
-                rmse_error = rmse_error + (pred - test_label[img]) ** 2
-                num_test += 1
+	    for img, pred in test_predictions.items():
+	        img = img.replace("center/", "")
+		mae_error = mae_error + abs(pred - test_label[img])
+		rmse_error = rmse_error + (pred - test_label[img]) ** 2
+		num_test += 1
             print("number of test: %d" % num_test)
-            mae_error = mae_error / 1.0 * 180 / 3.1415 / num_test
-            rmse_error = np.sqrt(rmse_error / 1.0 / num_test) * 180 / 3.1415
-            print("Testing mae error: %.4f, rmse error: %.4f" % (mae_error, rmse_error))
+	    mae_error = mae_error / 1.0 * 180 / 3.1415 / num_test
+	    rmse_error = np.sqrt(rmse_error / 1.0 / num_test) * 180 / 3.1415
+	    print("Testing mae error: %.4f, rmse error: %.4f" % (mae_error, rmse_error))
             if args.flag == 'test':
                 print('finish testing')
                 break
-            if best_testing_score is None:
-                best_testing_score = mae_error
-            if mae_error < best_testing_score:
-                saver.save(session, args.path_save)
-                best_testing_score = mae_error
-                print('\r', " Model has become better, SAVED at epoch %d" % epoch,)
-            if epoch != NUM_EPOCHS - 1:
-                print ("Training")
-                _, train_predictions = do_epoch(session=session, sequences=train_seq, mode="train")
-                result = np.float128(0.0)
-                mae_train = np.float128(0.0)
-                for img, stats in train_predictions.items():
-                    result += stats[-1]
-                    mae_train += stats[-2]
-                print ("Unnormalized MAE(train): ", mae_train / len(train_predictions))
-                print ("Training unnormalized RMSE:", np.sqrt(result / len(train_predictions)))
+	    if best_testing_score is None:
+		best_testing_score = mae_error
+	    if mae_error < best_testing_score:
+	        saver.save(session, args.path_save)
+		best_testing_score = mae_error
+		print('\r', " Model has become better, SAVED at epoch %d" % epoch,)
+	    if epoch != NUM_EPOCHS - 1:
+		print ("Training")
+		_, train_predictions = do_epoch(session=session, sequences=train_seq, mode="train")
+		result = np.float128(0.0)
+		mae_train = np.float128(0.0)
+		for img, stats in train_predictions.items():
+		    result += stats[-1]
+		    mae_train += stats[-2]
+		print ("Unnormalized MAE(train):", mae_train / len(train_predictions))
+		print ("Training unnormalized RMSE:", np.sqrt(result / len(train_predictions)))
