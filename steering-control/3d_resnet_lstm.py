@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============================================================================
-"""Loads a sample video and classifies using a trained Kinetics checkpoint."""
+"""Loads a sample video and classifies using a trained Kinetics checkpoint.0"""
 
 from __future__ import absolute_import
 from __future__ import division
