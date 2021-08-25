@@ -603,5 +603,5 @@ with graph.as_default():
                 for img, stats in train_predictions.items():
                     result += stats[-1]
                     mae_train += stats[-2]
-                print ("Unnormalized MAE(train):", mae_train / len(train_predictions))
+                print ("Unnormalized MAE(train): ", mae_train / len(train_predictions))
                 print ("Training unnormalized RMSE:", np.sqrt(result / len(train_predictions)))
