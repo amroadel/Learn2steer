@@ -573,7 +573,7 @@ with graph.as_default():
             test_predictions = []
             num_test = 0
             start = time.time()
-	    _, test_predictions = do_epoch(session=session, sequences=test_seq, mode="test")
+	        _, test_predictions = do_epoch(session=session, sequences=test_seq, mode="test")
             end = time.time()
             print("Total testing time :" + str(end - start))
             
